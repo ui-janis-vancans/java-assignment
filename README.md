@@ -1,34 +1,46 @@
 ## Prerequisites
 - Java 8 or higher
 
+## Requirements
+- `Gradle` or `Maven` as build tool, preferably with wrapper included
+- Application can be built and run without any additional configuration needed, provide necessary commands for running it
+- Feel free to design API as you wish - it can be REST API, CLI application, etc.
+- Feel free to choose any 3rd party libraries you find useful
+
 ## What will be evaluated
 - Completion of requirements
-- Code quality
+- Code quality & design
 - Meaningful test coverage
 
 ## Description
-Application allows to register devices. Device could be any of given types - `gateway`, `switch` or `access_point`.
+Network deployment might consist of several devices.
 
-Device may or may not have `uplinkMac`.
-There can be multiple devices connected to one uplink device. Each device is connected to one uplink at a time.
+Networking device might be of following types:
+- `Gateway` - serves as access point to another network
+- `Switch` - connects devices on a computer network
+- `Access Point` -  connects devices on a computer network via Wi-Fi
 
+Typically, these devices are connected to one another and collectively form a network deployment.
+Every device on a computer network can be identified by [MAC address](https://en.wikipedia.org/wiki/MAC_address).
+**If** device is attached to another device in same network, it is represented via *uplink* reference.
 
 ## Task
-1. Add `type` property to `Device` class
+Define and implement *Device API*, which should support following features:
+- Registering a device to a network deployment
+    - **input**: `deviceType`, `macAddress`, `uplinkMacAddress`
+- Retrieving all registered devices, sorted by *device type*
+    - **output**: sorted list of devices, where each entry has `deviceType` and `macAddress` (sorting order: `Gateway` > `Switch` > `Access Point`) 
+- Retrieving network deployment device by MAC address
+    - **input**: `macAddress`
+    - **output**: `Device` entry, which consists of `deviceType` and `macAddress`
+- Retrieving all registered network device topology
+    - **output**: `Device topology` as [tree structure](https://en.wikipedia.org/wiki/Tree_(data_structure)), node should be represented as `macAddress`
+- Retrieving network device topology starting from a specific device
+    - **input**: `macAddress`
+    - **output**: `Device topology` where root node is `device` with matching `macAddress`
 
-2. Define data structure for `DeviceTopology`, it should represent how devices are connected considering `uplinkMac` and `mac` properties
+Additional notes:
+- Device may or may not be connected to uplink device 
 
-3. Implement `DeviceController` endpoints, use `DeviceService` and `InMemoryDeviceRepository` classes.
-    - POST `/devices` should allow to register a `Device`
-    - GET `/devices` should return all registered devices, returned list should be ordered by device type (`gateway` > `switch` > `access_point`)
-    - GET `/devices/topology` should return topology for all registered devices
-    - GET `/devices/{mac}` should return registerd device with matching MAC address
-    - GET `/devices/{mac}/topology` should return topology where upmost device has matching MAC address 
-
-## Definition of done
-- Application can be built and runs without any additional local configuration needed
-- Task requirements defined above are completed
-
-## Definition of done
-- Feel free to refactor existing code
-- Feel free to add other 3rd party libraries if needed
+## Submission
+- Provide URL to a public repository or send project files as ZIP archive
