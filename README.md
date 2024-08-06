@@ -1,5 +1,5 @@
 ## Prerequisites
-- Java 8 or higher
+- Java 17 or higher
 
 ## Requirements
 - `Gradle` or `Maven` as build tool, preferably with wrapper included
